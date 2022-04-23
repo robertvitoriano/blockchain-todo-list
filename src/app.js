@@ -1,4 +1,5 @@
 const App = {
+  loading: false,
   contracts:{},
   load: async () =>{
     //Load App...
@@ -54,12 +55,19 @@ const App = {
   },
 
   render:async () =>{
+
+    if(App.loading) return
+
+    App.loading = true;
+
     const accountElement = document.querySelector('#account');
     accountElement.innerHTML = "Account: "+App.account;
     console.log({
       element:accountElement,
       account:App.account
     })
+
+    App.loading = false
 
   }
 
