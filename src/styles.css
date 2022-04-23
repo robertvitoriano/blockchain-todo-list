@@ -15,6 +15,9 @@ ul {
   margin-bottom: 0px;
 }
 
+#loader{
+  margin-top:76px;
+}
 #completedTaskList .content {
   color: grey;
   text-decoration: line-through;

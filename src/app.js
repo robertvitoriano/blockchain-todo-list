@@ -1,14 +1,14 @@
 const App = {
   loading: false,
-  contracts:{},
-  load: async () =>{
+  contracts: {},
+  load: async () => {
     //Load App...
     await App.loadWeb3();
     await App.loadAccount();
     await App.loadContract();
     await App.render();
     console.log('App loading !!')
-  
+
   },
   loadWeb3: async () => {
     if (typeof web3 !== 'undefined') {
@@ -24,7 +24,7 @@ const App = {
         // Request account access if needed
         await ethereum.enable()
         // Acccounts now exposed
-        web3.eth.sendTransaction({/* ... */})
+        web3.eth.sendTransaction({/* ... */ })
       } catch (error) {
         // User denied account access...
       }
@@ -34,7 +34,7 @@ const App = {
       App.web3Provider = web3.currentProvider
       window.web3 = new Web3(web3.currentProvider)
       // Acccounts always exposed
-      web3.eth.sendTransaction({/* ... */})
+      web3.eth.sendTransaction({/* ... */ })
     }
     // Non-dapp browsers...
     else {
@@ -42,7 +42,7 @@ const App = {
     }
   },
 
-  loadAccount: async () =>{
+  loadAccount: async () => {
     const accounts = await web3.eth.getAccounts();
     App.account = accounts[0];
   },
@@ -53,21 +53,30 @@ const App = {
     App.todoList = await App.contracts.TodoList.deployed();
     console.log('Contract loaded !!')
   },
+  setLoading: (loadingState) => {
+    App.loading = loadingState;
+    const loader = document.querySelector('#loader');
+    const content = document.querySelector('#content')
+    if (loadingState) {
+      loader.style.display = 'block'
+      content.style.display = 'none'
+    } else {
+      loader.style.display = 'none'
+      content.style.display = 'block'
+    }
 
-  render:async () =>{
 
-    if(App.loading) return
+  },
+  render: async () => {
 
-    App.loading = true;
+    if (App.loading) return
+
+    App.setLoading(true);
 
     const accountElement = document.querySelector('#account');
-    accountElement.innerHTML = "Account: "+App.account;
-    console.log({
-      element:accountElement,
-      account:App.account
-    })
+    accountElement.innerHTML = "Account: " + App.account;
 
-    App.loading = false
+    App.setLoading(false);
 
   }
 
