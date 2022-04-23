@@ -68,18 +68,20 @@ const App = {
     const completedTasksList = document.querySelector('#completed-task-list');
     const uncompletedTasksList = document.querySelector('#task-list');
     const taskToToggle = document.querySelector(`.task-${taskId}`)
-    const taskContentToToggle = taskToToggle.querySelector('.task-content')
+    const taskCheckbox = taskToToggle.querySelector('input')
 
-    if(taskContentToToggle.style.textDecoration === 'line-through'){
+
+    if(taskCheckbox.checked){
       const checkedTask = taskToToggle.cloneNode(true)
-      checkedTask.addEventListener('click', (event)=>App.toggleComplete(event, taskId))
-      uncompletedTasksList.appendChild(checkedTask)
       taskToToggle.remove()
-    }else{
-      const checkedTask = taskToToggle.cloneNode(true)
       checkedTask.addEventListener('click', (event)=>App.toggleComplete(event, taskId))
       completedTasksList.appendChild(checkedTask)
+
+    }else{
+      const checkedTask = taskToToggle.cloneNode(true)
       taskToToggle.remove()
+      checkedTask.addEventListener('click', (event)=>App.toggleComplete(event, taskId))
+      uncompletedTasksList.appendChild(checkedTask)
     }
   },
   renderTasks: async () => {
