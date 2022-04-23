@@ -30,19 +30,21 @@
           <p class="text-center">Loading...</p>
         </div>
         <div id="content">
+          <div class="taskTemplate" class="checkbox" style="display: none">
+            <label>
+              <input type="checkbox"/>
+              <span class="content">Task content goes here...</span>
+            </label>
+          </div>
           <!-- <form>
               <input id="newTask" type="text" class="form-control" placeholder="Add task..." required>
               <input type="submit" hidden="">
             </form> -->
-          <ul id="taskList" class="list-unstyled">
-            <div class="taskTemplate" class="checkbox" style="display: none">
-              <label>
-                <input type="checkbox"/>
-                <span class="content">Task content goes here...</span>
-              </label>
-            </div>
+          <ul id="task-list">
+            <h3>Uncompleted Tasks</h3>
           </ul>
-          <ul id="completedTaskList" class="list-unstyled">
+          <ul id="completed-task-list">
+            <h3>Completed Tasks</h3>
           </ul>
         </div>
       </main>

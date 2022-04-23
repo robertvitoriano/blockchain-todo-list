@@ -11,18 +11,23 @@ form {
   margin-bottom: 10px;
 }
 
-ul {
-  margin-bottom: 0px;
-}
 
 #loader{
   margin-top:76px;
 }
-#completedTaskList .content {
+#completed-task-list{
+  margin-top: 50px;
+
+}
+#completed-task-list .task-content {
   color: grey;
   text-decoration: line-through;
 }
 
 .task-item{
-  margin-top:80px;
+  margin-top:20px;
+}
+
+#task-list{
+  margin-top: 80px;
 }

@@ -64,13 +64,22 @@ const App = {
       content.style.display = 'block'
     }
   },
-  toggleComplete: (event, taskContentClass) => {
-    const taskContentToToggle = document.querySelector(`.${taskContentClass}`)
+  toggleComplete: (event, taskId) => {
+    const completedTasksList = document.querySelector('#completed-task-list');
+    const uncompletedTasksList = document.querySelector('#task-list');
+    const taskToToggle = document.querySelector(`.task-${taskId}`)
+    const taskContentToToggle = taskToToggle.querySelector('.task-content')
 
     if(taskContentToToggle.style.textDecoration === 'line-through'){
-      taskContentToToggle.style.textDecoration = 'none'
+      const checkedTask = taskToToggle.cloneNode(true)
+      checkedTask.addEventListener('click', (event)=>App.toggleComplete(event, taskId))
+      uncompletedTasksList.appendChild(checkedTask)
+      taskToToggle.remove()
     }else{
-      taskContentToToggle.style.setProperty('text-decoration', 'line-through');
+      const checkedTask = taskToToggle.cloneNode(true)
+      checkedTask.addEventListener('click', (event)=>App.toggleComplete(event, taskId))
+      completedTasksList.appendChild(checkedTask)
+      taskToToggle.remove()
     }
   },
   renderTasks: async () => {
@@ -87,8 +96,8 @@ const App = {
       newTaskElement.classList.remove('taskTemplate')
       const newTaskElementClasses = ['task-item', `task-${taskId}`]
       newTaskElement.classList.add(...newTaskElementClasses)
-      const completedTasksList = document.querySelector('#completedTaskList');
-      const uncompletedTasksList = document.querySelector('#taskList');
+      const completedTasksList = document.querySelector('#completed-task-list');
+      const uncompletedTasksList = document.querySelector('#task-list');
       if(taskCompleted){
         completedTasksList.appendChild(newTaskElement)
       }else{
@@ -105,7 +114,7 @@ const App = {
       const newTaskCheckboxClasses = ['task-checkbox', `task-checkbox-${taskId}`]
       newTaskCheckbox.classList.add(...newTaskCheckboxClasses)
       newTaskCheckbox.checked = taskCompleted
-      newTaskCheckbox.addEventListener('click', (event)=>App.toggleComplete(event, `task-content-${taskId}`))
+      newTaskCheckbox.addEventListener('click', (event)=>App.toggleComplete(event, taskId))
     }
   },
   render: async () => {
