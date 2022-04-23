@@ -87,7 +87,13 @@ const App = {
       newTaskElement.classList.remove('taskTemplate')
       const newTaskElementClasses = ['task-item', `task-${taskId}`]
       newTaskElement.classList.add(...newTaskElementClasses)
-      taskTemplate.after(newTaskElement)
+      const completedTasksList = document.querySelector('#completedTaskList');
+      const uncompletedTasksList = document.querySelector('#taskList');
+      if(taskCompleted){
+        completedTasksList.appendChild(newTaskElement)
+      }else{
+        uncompletedTasksList.appendChild(newTaskElement)
+      }
 
       const newTaskContent = newTaskElement.querySelector('.content')
       const newTaskContentClasses = ['task-content', `task-content-${taskId}`]
