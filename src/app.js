@@ -51,7 +51,6 @@ const App = {
     App.contracts.TodoList = TruffleContract(todoList);
     App.contracts.TodoList.setProvider(App.web3Provider);
     App.todoList = await App.contracts.TodoList.deployed();
-    console.log('Contract loaded !!')
   },
   setLoading: (loadingState) => {
     App.loading = loadingState;
@@ -64,8 +63,44 @@ const App = {
       loader.style.display = 'none'
       content.style.display = 'block'
     }
+  },
+  toggleComplete: (event, taskContentClass) => {
+    const taskContentToToggle = document.querySelector(`.${taskContentClass}`)
 
+    if(taskContentToToggle.style.textDecoration === 'line-through'){
+      taskContentToToggle.style.textDecoration = 'none'
+    }else{
+      taskContentToToggle.style.setProperty('text-decoration', 'line-through');
+    }
+  },
+  renderTasks: async () => {
+    const taskCount = await App.todoList.taskCount()
+    const taskTemplate = document.querySelector('.taskTemplate');
+    for (let i = 1; i <= taskCount.toNumber(); i++) {
+      const task = await App.todoList.tasks(i);
+      const taskId = task[0].toNumber();
+      const taskContent = task[1];
+      const taskCompleted = task[2];
 
+      const newTaskElement = taskTemplate.cloneNode(true);
+      newTaskElement.style.display = 'block'
+      newTaskElement.classList.remove('taskTemplate')
+      const newTaskElementClasses = ['task-item', `task-${taskId}`]
+      newTaskElement.classList.add(...newTaskElementClasses)
+      taskTemplate.after(newTaskElement)
+
+      const newTaskContent = newTaskElement.querySelector('.content')
+      const newTaskContentClasses = ['task-content', `task-content-${taskId}`]
+      newTaskContent.classList.add(...newTaskContentClasses);
+      newTaskContent.classList.remove('content')
+      newTaskContent.innerHTML = taskContent
+
+      const newTaskCheckbox = newTaskElement.querySelector('input')
+      const newTaskCheckboxClasses = ['task-checkbox', `task-checkbox-${taskId}`]
+      newTaskCheckbox.classList.add(...newTaskCheckboxClasses)
+      newTaskCheckbox.checked = taskCompleted
+      newTaskCheckbox.addEventListener('click', (event)=>App.toggleComplete(event, `task-content-${taskId}`))
+    }
   },
   render: async () => {
 
@@ -75,11 +110,10 @@ const App = {
 
     const accountElement = document.querySelector('#account');
     accountElement.innerHTML = "Account: " + App.account;
+    await App.renderTasks();
 
     App.setLoading(false);
-
   }
-
 }
 
 //start the app when browser loads

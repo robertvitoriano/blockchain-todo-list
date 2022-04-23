@@ -22,3 +22,7 @@ ul {
   color: grey;
   text-decoration: line-through;
 }
+
+.task-item{
+  margin-top:80px;
+}
