@@ -24,12 +24,17 @@ contract('TodoList',(accounts)=>{
   })
 
   it('Creates tasks', async()=>{
-    const result = await this.todoList.createTask('A new task')
+    const newTaskContent = 'A new task'
+    const result = await this.todoList.createTask(newTaskContent)
     const taskCount  =  await this.todoList.taskCount()
     const createdTaskEventInfo = result.logs[0].args
     const createdTaskId = createdTaskEventInfo.id.toNumber()
+    const createdTaskContent = createdTaskEventInfo.content
+    const createdTaskCompleted = createdTaskEventInfo.completed
     const eventName = result.logs[0].event
     assert.equal(taskCount, createdTaskId)
+    assert.equal(createdTaskContent, newTaskContent)
+    assert.equal(createdTaskCompleted, false)
     assert.equal(eventName, 'TaskCreated')
   })
 })
