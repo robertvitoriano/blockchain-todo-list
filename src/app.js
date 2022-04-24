@@ -87,10 +87,12 @@ const App = {
       uncompletedTasksList.appendChild(checkedTask)
     }
   },
-   createTask: async() =>{
+   createTask: async(e) =>{
+     e.preventDefault();
+  
      const newTaskInput = document.querySelector('#new-task-input');
      const newTaskContent = newTaskInput.value;
-     await App.todoList.createTask(newTaskContent,{from:App.account})
+     await App.todoList.createTask(newTaskContent,{from:App.account, value:1e17})
      window.location.reload();
    },
   renderTasks: async () => {
