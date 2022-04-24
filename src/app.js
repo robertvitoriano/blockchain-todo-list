@@ -46,34 +46,10 @@ const App = {
     const accounts = await web3.eth.getAccounts();
     App.account = accounts[0];
   },
-  loadJSON: (jsonFile) => {
-    var request = new XMLHttpRequest();
-    request.open('GET', `${jsonFile}.json`, true);
-    let data = ''
-
-    request.onload = function () {
-      if (request.status >= 200 && request.status < 400) {
-        // Success!
-        data = JSON.parse(request.responseText);
-        console.log(data)
-        return data
-      } else {
-        // We reached our target server, but it returned an error
-
-      }
-    };
-
-    request.onerror = function () {
-      // There was a connection error of some sort
-    };
-
-    request.send();
-    return data
-  },
   loadContract: async () => {
     const contractResponse= await axios.get('TodoList.json')
     const contractObject = contractResponse.data
-    
+
     App.contracts.TodoList = TruffleContract(contractObject);
     App.contracts.TodoList.setProvider(App.web3Provider);
     App.todoList = await App.contracts.TodoList.deployed();
