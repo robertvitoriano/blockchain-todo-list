@@ -86,6 +86,12 @@ const App = {
       uncompletedTasksList.appendChild(checkedTask)
     }
   },
+   createTask: async() =>{
+     const newTaskInput = document.querySelector('#new-task-input');
+     const newTaskContent = newTaskInput.value;
+     
+     await App.todoList.createTask(newTaskContent, {from: App.account})
+   },
   renderTasks: async () => {
     const taskCount = await App.todoList.taskCount()
     const taskTemplate = document.querySelector('.taskTemplate');
@@ -129,6 +135,8 @@ const App = {
 
     const accountElement = document.querySelector('#account');
     accountElement.innerHTML = "Account: " + App.account;
+    const createTaskButton = document.querySelector('.new-task-submit-button')
+    createTaskButton.addEventListener('click', App.createTask)
     await App.renderTasks();
 
     App.setLoading(false);
