@@ -46,9 +46,35 @@ const App = {
     const accounts = await web3.eth.getAccounts();
     App.account = accounts[0];
   },
+  loadJSON: (jsonFile) => {
+    var request = new XMLHttpRequest();
+    request.open('GET', `${jsonFile}.json`, true);
+    let data = ''
+
+    request.onload = function () {
+      if (request.status >= 200 && request.status < 400) {
+        // Success!
+        data = JSON.parse(request.responseText);
+        console.log(data)
+        return data
+      } else {
+        // We reached our target server, but it returned an error
+
+      }
+    };
+
+    request.onerror = function () {
+      // There was a connection error of some sort
+    };
+
+    request.send();
+    return data
+  },
   loadContract: async () => {
-    const todoList = await $.getJSON('TodoList.json');
-    App.contracts.TodoList = TruffleContract(todoList);
+    const contractResponse= await axios.get('TodoList.json')
+    const contractObject = contractResponse.data
+    
+    App.contracts.TodoList = TruffleContract(contractObject);
     App.contracts.TodoList.setProvider(App.web3Provider);
     App.todoList = await App.contracts.TodoList.deployed();
   },
@@ -71,16 +97,16 @@ const App = {
     const taskCheckbox = taskToToggle.querySelector('input')
 
 
-    if(taskCheckbox.checked){
+    if (taskCheckbox.checked) {
       const checkedTask = taskToToggle.cloneNode(true)
       taskToToggle.remove()
-      checkedTask.addEventListener('click', (event)=>App.toggleComplete(event, taskId))
+      checkedTask.addEventListener('click', (event) => App.toggleComplete(event, taskId))
       completedTasksList.appendChild(checkedTask)
 
-    }else{
+    } else {
       const checkedTask = taskToToggle.cloneNode(true)
       taskToToggle.remove()
-      checkedTask.addEventListener('click', (event)=>App.toggleComplete(event, taskId))
+      checkedTask.addEventListener('click', (event) => App.toggleComplete(event, taskId))
       uncompletedTasksList.appendChild(checkedTask)
     }
   },
@@ -100,9 +126,9 @@ const App = {
       newTaskElement.classList.add(...newTaskElementClasses)
       const completedTasksList = document.querySelector('#completed-task-list');
       const uncompletedTasksList = document.querySelector('#task-list');
-      if(taskCompleted){
+      if (taskCompleted) {
         completedTasksList.appendChild(newTaskElement)
-      }else{
+      } else {
         uncompletedTasksList.appendChild(newTaskElement)
       }
 
@@ -116,7 +142,7 @@ const App = {
       const newTaskCheckboxClasses = ['task-checkbox', `task-checkbox-${taskId}`]
       newTaskCheckbox.classList.add(...newTaskCheckboxClasses)
       newTaskCheckbox.checked = taskCompleted
-      newTaskCheckbox.addEventListener('click', (event)=>App.toggleComplete(event, taskId))
+      newTaskCheckbox.addEventListener('click', (event) => App.toggleComplete(event, taskId))
     }
   },
   render: async () => {
