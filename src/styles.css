@@ -31,3 +31,12 @@ form {
 #task-list{
   margin-top: 80px;
 }
+
+#new-task-form{
+  margin-top: 80px;
+  display: flex;
+}
+
+.new-task-submit-button{
+  width: fit-content;
+}
