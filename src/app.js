@@ -44,6 +44,7 @@ const App = {
 
   loadAccount: async () => {
     const accounts = await web3.eth.getAccounts();
+    console.log('Accounts ', accounts)
     App.account = accounts[0];
   },
   loadContract: async () => {
@@ -89,8 +90,8 @@ const App = {
    createTask: async() =>{
      const newTaskInput = document.querySelector('#new-task-input');
      const newTaskContent = newTaskInput.value;
-     
-     await App.todoList.createTask(newTaskContent, {from: App.account})
+     await App.todoList.createTask(newTaskContent,{from:App.account})
+     window.location.reload();
    },
   renderTasks: async () => {
     const taskCount = await App.todoList.taskCount()
